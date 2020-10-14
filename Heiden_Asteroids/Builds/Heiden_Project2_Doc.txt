@@ -1,0 +1,28 @@
+John Heiden
+IGME 202, Section 4
+
+Assignment:
+Asteroids
+
+Description:
+This project is a clone of the classic game Asteroids using handmade collision detection.
+The user must survive hordes of asteroids as long as possible to rack up points.
+
+User Responsibilities:
+The user must use the arrow keys to move. Pressing the space bar will shoot a bullet. Points are earned by hitting an asteroid
+with a bullet. If a stage 1 (large) asteroid is hit, 20 points are awarded. If a stage 2 (small) asteroid is hit, 50 points are
+awarded. Hitting a stage 2 asteroid will yield 2 stage 2 asteroids. Hitting a stage 2 asteroid will destroy it.
+
+Above and Beyond:
+I added a main menu that displays the name of the game and my name above a play button using the Canvas in Unity.
+Once the play button is clicked the game begins. When the player loses, they are taken to a game over screen that
+displays their score at the end and a button to exit the game. This also is done using the Canvas in Unity.
+
+Known Issues:
+It is possible for asteroids to spawn on top of the player, resulting in a lost life. If a stage 1 asteroid is moving in the opposite
+direction as the player and the player is located near the position (0, 0), it is possible to lose all 3 lives simultaneously when the
+collision between the player registers and then 2 more collisions register when the 2 stage 2 asteroids are created. It is also possible
+to instantly lose when launching the game initially, since asteroids spawning on top of the player is a possibility.
+
+Sources:
+Spaceship: https://www.pngrepo.com/svg/138945/spaceship
