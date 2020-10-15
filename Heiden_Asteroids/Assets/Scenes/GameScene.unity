@@ -269,6 +269,12 @@ MonoBehaviour:
   stage: 0
   asteroidCount: 0
   collisions: {fileID: 399232446}
+  spawnArea:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0

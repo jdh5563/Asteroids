@@ -18,6 +18,8 @@ public class SpawnAsteroid : MonoBehaviour
 	private float height;
 	private float width;
 
+	public Rect spawnArea;
+
 	// Start is called before the first frame update
 	void Start()
 	{
@@ -25,6 +27,8 @@ public class SpawnAsteroid : MonoBehaviour
 		cam = Camera.main;
 		height = cam.orthographicSize;
 		width = height * cam.aspect;
+		spawnArea = new Rect(0, 0, 2 * width, 2 * height);
+		spawnArea.center = Vector2.zero;
 	}
 
 	// Update is called once per frame
@@ -33,9 +37,33 @@ public class SpawnAsteroid : MonoBehaviour
 		//Spawns 5 new asteroids at random positions when the current on screen ones are destroyed
 		if (asteroidCount == 0)
 		{
-			for (int i = 0; i < 5; i++)
+			for (int i = 0; i < 10; i++)
 			{
-				Vector2 randomPosition = new Vector2(Random.Range(-width, width), Random.Range(-height, height));
+				float xPosition;
+				float yPosition;
+				int leftOrRight = Random.Range(0, 2);
+
+				if (leftOrRight == 0)
+				{
+					xPosition = Random.Range(spawnArea.xMin, -width - 10f);
+				}
+				else
+				{
+					xPosition = Random.Range(width + 10f, spawnArea.xMax);
+				}
+
+				int upOrDown = Random.Range(0, 2);
+
+				if (upOrDown == 0)
+				{
+					yPosition = Random.Range(spawnArea.yMin, -height - 10f);
+				}
+				else
+				{
+					yPosition = Random.Range(height + 10f, spawnArea.yMax);
+				}
+
+				Vector2 randomPosition = new Vector2(xPosition, yPosition);
 				GameObject asteroid = Instantiate(asteroidPrefab, randomPosition, Quaternion.identity);
 				asteroid.GetComponent<SpriteRenderer>().sprite = asteroidSprites[Random.Range(0, asteroidSprites.Length)];
 				collisions.asteroidRenderers.Add(asteroid.GetComponent<SpriteRenderer>());

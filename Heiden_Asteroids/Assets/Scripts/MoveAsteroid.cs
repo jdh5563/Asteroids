@@ -11,21 +11,16 @@ public class MoveAsteroid : MonoBehaviour
 	//The asteroid's stage
 	public int stage;
 
-	//Details about the camera
-	private Camera cam;
-	private float height;
-	private float width;
+	private SpawnAsteroid spawner;
 
 	// Start is called before the first frame update
 	void Start()
     {
 		//Asteroids have a random position and velocity;
         asteroidPosition = transform.position;
-        asteroidVelocity = new Vector2(Random.Range(-0.01f, 0.01f), Random.Range(-0.01f, 0.01f));
+        asteroidVelocity = new Vector2(Random.Range(-0.05f, 0.05f), Random.Range(-0.05f, 0.05f));
 
-		cam = Camera.main;
-		height = cam.orthographicSize;
-		width = height * cam.aspect;
+		spawner = GameObject.Find("GameManager").GetComponent<SpawnAsteroid>();
 	}
 
     // Update is called once per frame
@@ -40,29 +35,32 @@ public class MoveAsteroid : MonoBehaviour
 		{
 			stage = 0;
 		}
+    }
 
+	private void FixedUpdate()
+	{
 		//Draws the asteroid at that position
-        asteroidPosition += asteroidVelocity;
+		asteroidPosition += asteroidVelocity;
 
 		//Keeps the asteroid within the bounds of the camera
-		if (asteroidPosition.x > width)
+		if (asteroidPosition.x > spawner.spawnArea.xMax)
 		{
-			asteroidPosition.x = -width;
+			asteroidPosition.x = spawner.spawnArea.xMin;
 		}
-		else if (asteroidPosition.x < -width)
+		else if (asteroidPosition.x < spawner.spawnArea.xMin)
 		{
-			asteroidPosition.x = width;
+			asteroidPosition.x = spawner.spawnArea.xMax;
 		}
 
-		if (asteroidPosition.y > height)
+		if (asteroidPosition.y > spawner.spawnArea.yMax)
 		{
-			asteroidPosition.y = -height;
+			asteroidPosition.y = spawner.spawnArea.yMin;
 		}
-		else if (asteroidPosition.y < -height)
+		else if (asteroidPosition.y < spawner.spawnArea.yMin)
 		{
-			asteroidPosition.y = height;
+			asteroidPosition.y = spawner.spawnArea.yMax;
 		}
 
 		transform.position = asteroidPosition;
-    }
+	}
 }

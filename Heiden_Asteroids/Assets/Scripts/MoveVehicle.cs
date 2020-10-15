@@ -36,6 +36,9 @@ public class MoveVehicle : MonoBehaviour
 	private int lives = 2;
 	public Image[] livesImages;
 
+	public bool isInvincible = false;
+	private int invincibilityTimer = 150;
+
 	// Start is called before the first frame update
 	void Start()
 	{
@@ -51,13 +54,13 @@ public class MoveVehicle : MonoBehaviour
 		if (Input.GetKey(KeyCode.LeftArrow))
 		{
 			// Rotate the direction vector by 1 degree each frame
-			direction = Quaternion.Euler(0, 0, turnSpeed) * direction;
+			direction = Quaternion.Euler(0, 0, turnSpeed * Time.deltaTime) * direction;
 		}
 
 		if (Input.GetKey(KeyCode.RightArrow))
 		{
 			// Rotate the direction vector by 1 degree each frame
-			direction = Quaternion.Euler(0, 0, -turnSpeed) * direction;
+			direction = Quaternion.Euler(0, 0, -turnSpeed * Time.deltaTime) * direction;
 		}
 
 		// The car accelerates when the up arrow is pressed and decelerates when it is released
@@ -74,6 +77,16 @@ public class MoveVehicle : MonoBehaviour
 	// FixedUpdate is in charge of setting up movement uniformly (not framerate dependent)
 	private void FixedUpdate()
 	{
+		if (isInvincible)
+		{
+			if (InvincibilityFrames() == 0)
+			{
+				invincibilityTimer = 150;
+				isInvincible = false;
+				GetComponent<SpriteRenderer>().enabled = true;
+			}
+		}
+
 		// Calculate the acceleration vector
 		acceleration = direction * accelerationRate;
 
@@ -124,19 +137,36 @@ public class MoveVehicle : MonoBehaviour
 	/// </summary>
 	public void Respawn()
 	{
-		//Respawns the ship in the middle of the screen 
-		if (lives > 0)
+		if (!isInvincible)
 		{
-			livesImages[lives].enabled = false;
-			vehiclePosition = Vector3.zero;
-			velocity = Vector3.zero;
-			direction = Vector3.right;
-			lives--;
+			isInvincible = true;
+
+			//Respawns the ship in the middle of the screen 
+			if (lives > 0)
+			{
+				livesImages[lives].enabled = false;
+				vehiclePosition = Vector3.zero;
+				velocity = Vector3.zero;
+				direction = Vector3.right;
+				lives--;
+			}
+
+			//Loads the game over screen
+			else
+			{
+				SceneManager.LoadScene(2);
+			}
 		}
-		//Loads the game over screen
-		else
+	}
+
+	private int InvincibilityFrames()
+	{
+		SpriteRenderer sprite = GetComponent<SpriteRenderer>();
+		if (invincibilityTimer % 10 == 0)
 		{
-			SceneManager.LoadScene(2);
+			sprite.enabled = !sprite.enabled;
 		}
+
+		return invincibilityTimer--;
 	}
 }

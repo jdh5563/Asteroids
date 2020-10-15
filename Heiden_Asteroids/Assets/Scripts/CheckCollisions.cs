@@ -52,18 +52,21 @@ public class CheckCollisions : MonoBehaviour
 				(Mathf.Pow(shipCenter.x - asteroidCenter.x, 2) +
 				Mathf.Pow(shipCenter.y - asteroidCenter.y, 2)))
 			{
-				shipRenderer.gameObject.GetComponent<MoveVehicle>().Respawn();
+				if (!shipRenderer.gameObject.GetComponent<MoveVehicle>().isInvincible)
+				{
+					if (asteroidRenderers[i].gameObject.GetComponent<MoveAsteroid>().stage == 0)
+					{
+						gameObject.GetComponent<SpawnAsteroid>().SplitAsteroid(asteroidRenderers[i].gameObject);
+					}
+					else
+					{
+						Destroy(asteroidRenderers[i].gameObject);
+						asteroidRenderers.Remove(asteroidRenderers[i]);
+						gameObject.GetComponent<SpawnAsteroid>().asteroidCount--;
+					}
+				}
 
-				if (asteroidRenderers[i].gameObject.GetComponent<MoveAsteroid>().stage == 0)
-				{
-					gameObject.GetComponent<SpawnAsteroid>().SplitAsteroid(asteroidRenderers[i].gameObject);
-				}
-				else
-				{
-					Destroy(asteroidRenderers[i].gameObject);
-					asteroidRenderers.Remove(asteroidRenderers[i]);
-					gameObject.GetComponent<SpawnAsteroid>().asteroidCount--;
-				}
+				shipRenderer.gameObject.GetComponent<MoveVehicle>().Respawn();
 
 				return;
 			}

@@ -99,7 +99,7 @@ MonoBehaviour:
   velocity: {x: 0, y: 0, z: 0}
   accelerationRate: 0.005
   maximumSpeed: 0.175
-  turnSpeed: 2
+  turnSpeed: 200
   livesImages:
   - {fileID: 0}
   - {fileID: 0}
